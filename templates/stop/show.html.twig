@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stop{% endblock %}
+
+{% block body %}
+    <h1>Stop</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ stop.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_time_departure</th>
+                <td>{{ stop.dateTimeDeparture ? stop.dateTimeDeparture|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_time_arrival</th>
+                <td>{{ stop.dateTimeArrival ? stop.dateTimeArrival|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stop_index') }}">back to list</a>
+
+    <a href="{{ path('app_stop_edit', {'id': stop.id}) }}">edit</a>
+
+    {{ include('stop/_delete_form.html.twig') }}
+{% endblock %}

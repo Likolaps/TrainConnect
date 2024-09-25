@@ -27,21 +27,26 @@
 				<th>departure time</th>
 				<th>arrival</th>
 				<th>arrival time</th>
+				<th>delay</th>
 			</tr>
 			{% for line in lines %}
-				<td>{{ line.train.type }}</td>
-				{% for stop in line.stops %}
-					{% if stop.date_time_arrival is null %}
-						<td>{{ stop.station.name }}</td>
-						<td>{{ stop.date_time_arrival|date('H:i') }}</td>
-					{% endif %}
-				{% endfor %}
-				{% for stop in line.stops %}
-					{% if stop.date_time_departure is null %}
-						<td>{{ stop.station.name }}</td>
-						<td>{{ stop.date_time_departure|date('H:i') }}</td>
-					{% endif %}
-				{% endfor %}
+				<tr>
+					<td>{{ line.train.type }}</td>
+					{% for stop in line.getStops() %}
+
+						{% if stop.dateTimeArrival is null %}
+							<td>{{ stop.station.name }}</td>
+							<td>{{ stop.dateTimeDeparture|date('H:i')}}</td>
+						{% endif %}
+					{% endfor %}
+					{% for stop in line.getStops() %}
+						{% if stop.dateTimeDeparture is null %}
+							<td>{{ stop.station.name }}</td>
+							<td>{{ stop.dateTimeArrival|date('H:i')}}</td>
+						{% endif %}
+					{% endfor %}
+					<td>{{ line.delay }}</td>
+				</tr>
 			{% endfor %}
 		</table>
 	</div>
