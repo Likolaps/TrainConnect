@@ -15,9 +15,15 @@
 
         {% block header %}
         
-        <a href = "{{path('app_index')}}">
-        <h1>Train Connect</h1>
-        </a>
+        <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{path('app_index')}}">
+                TrainConnect
+                </a>
+            </div>
+        </nav>
+        
+        
          
 
         {% endblock %}
