@@ -1,3 +1,7 @@
 body {
-    background-color: skyblue;
+    margin: 0;
+    min-height: 100vh;
+    background:linear-gradient(to bottom right,#8c52ff,#5ce1e6);
 }
+
+
