@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\LineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LineRepository::class)]
@@ -16,25 +15,22 @@ class Line
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_time_departure = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $delay = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_time_arrival = null;
+    #[ORM\ManyToOne(inversedBy: 'lines_id')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Train $train = null;
 
     /**
-     * @var Collection<int, Train>
+     * @var Collection<int, Stop>
      */
-    #[ORM\OneToMany(targetEntity: Train::class, mappedBy: 'line')]
-    private Collection $train;
-
-    #[ORM\ManyToOne(inversedBy: 'line')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Stop $stop = null;
+    #[ORM\OneToMany(targetEntity: Stop::class, mappedBy: 'line')]
+    private Collection $stops;
 
     public function __construct()
     {
-        $this->train = new ArrayCollection();
+        $this->stops = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -42,68 +38,56 @@ class Line
         return $this->id;
     }
 
-    public function getDateTimeDeparture(): ?\DateTimeInterface
+    public function getDelay(): ?int
     {
-        return $this->date_time_departure;
+        return $this->delay;
     }
 
-    public function setDateTimeDeparture(\DateTimeInterface $date_time_departure): static
+    public function setDelay(?int $delay): static
     {
-        $this->date_time_departure = $date_time_departure;
+        $this->delay = $delay;
 
         return $this;
     }
 
-    public function getDateTimeArrival(): ?\DateTimeInterface
+    public function getTrain(): ?Train
     {
-        return $this->date_time_arrival;
+        return $this->train;
     }
 
-    public function setDateTimeArrival(\DateTimeInterface $date_time_arrival): static
+    public function setTrain(?Train $train): static
     {
-        $this->date_time_arrival = $date_time_arrival;
+        $this->train = $train;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Train>
+     * @return Collection<int, Stop>
      */
-    public function getTrain(): Collection
+    public function getStops(): Collection
     {
-        return $this->train;
+        return $this->stops;
     }
 
-    public function addTrain(Train $train): static
+    public function addStop(Stop $stop): static
     {
-        if (!$this->train->contains($train)) {
-            $this->train->add($train);
-            $train->setLine($this);
+        if (!$this->stops->contains($stop)) {
+            $this->stops->add($stop);
+            $stop->setLine($this);
         }
 
         return $this;
     }
 
-    public function removeTrain(Train $train): static
+    public function removeStop(Stop $stop): static
     {
-        if ($this->train->removeElement($train)) {
+        if ($this->stops->removeElement($stop)) {
             // set the owning side to null (unless already changed)
-            if ($train->getLine() === $this) {
-                $train->setLine(null);
+            if ($stop->getLine() === $this) {
+                $stop->setLine(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getStop(): ?Stop
-    {
-        return $this->stop;
-    }
-
-    public function setStop(?Stop $stop): static
-    {
-        $this->stop = $stop;
 
         return $this;
     }
