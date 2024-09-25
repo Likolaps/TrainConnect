@@ -10,6 +10,15 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+
+        {% block header %}
+        
+        <a href = "{{path('app_index')}}">
+        <h1>Train Connect</h1>
+        </a>
+         
+
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
