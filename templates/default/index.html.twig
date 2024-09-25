@@ -32,19 +32,31 @@
 			{% for line in lines %}
 				<tr>
 					<td>{{ line.train.type }}</td>
+					{% set missing = true %}
 					{% for stop in line.getStops() %}
 
 						{% if stop.dateTimeArrival is null %}
 							<td>{{ stop.station.name }}</td>
 							<td>{{ stop.dateTimeDeparture|date('H:i')}}</td>
+							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
+					{% if missing %}
+						<td></td>
+						<td></td>
+					{% endif %}
+					{% set missing = true %}
 					{% for stop in line.getStops() %}
 						{% if stop.dateTimeDeparture is null %}
 							<td>{{ stop.station.name }}</td>
 							<td>{{ stop.dateTimeArrival|date('H:i')}}</td>
+							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
+					{% if missing %}
+						<td></td>
+						<td></td>
+					{% endif %}
 					<td>{{ line.delay }}</td>
 				</tr>
 			{% endfor %}
