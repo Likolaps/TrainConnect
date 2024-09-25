@@ -3,8 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\StopRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StopRepository::class)]
@@ -15,52 +14,57 @@ class Stop
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, Line>
-     */
-    #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'stop')]
-    private Collection $line;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_time_departure = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_time_arrival = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stops')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Line $line = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stops')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Station $station = null;
-
-    public function __construct()
-    {
-        $this->line = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Line>
-     */
-    public function getLine(): Collection
+    public function getDateTimeDeparture(): ?\DateTimeInterface
     {
-        return $this->line;
+        return $this->date_time_departure;
     }
 
-    public function addLine(Line $line): static
+    public function setDateTimeDeparture(?\DateTimeInterface $date_time_departure): static
     {
-        if (!$this->line->contains($line)) {
-            $this->line->add($line);
-            $line->setStop($this);
-        }
+        $this->date_time_departure = $date_time_departure;
 
         return $this;
     }
 
-    public function removeLine(Line $line): static
+    public function getDateTimeArrival(): ?\DateTimeInterface
     {
-        if ($this->line->removeElement($line)) {
-            // set the owning side to null (unless already changed)
-            if ($line->getStop() === $this) {
-                $line->setStop(null);
-            }
-        }
+        return $this->date_time_arrival;
+    }
+
+    public function setDateTimeArrival(?\DateTimeInterface $date_time_arrival): static
+    {
+        $this->date_time_arrival = $date_time_arrival;
+
+        return $this;
+    }
+
+    public function getLine(): ?Line
+    {
+        return $this->line;
+    }
+
+    public function setLine(?Line $line): static
+    {
+        $this->line = $line;
 
         return $this;
     }

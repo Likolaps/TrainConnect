@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrainRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TrainRepository::class)]
@@ -19,8 +21,17 @@ class Train
     #[ORM\Column(length: 255)]
     private ?string $number = null;
 
-    #[ORM\ManyToOne(inversedBy: 'train')]
-    private ?Line $line = null;
+    /**
+     * @var Collection<int, Line>
+     */
+    #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'train')]
+    private Collection $lines_id;
+
+    public function __construct()
+    {
+        $this->lines_id = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -51,15 +62,35 @@ class Train
         return $this;
     }
 
-    public function getLine(): ?Line
+    /**
+     * @return Collection<int, Line>
+     */
+    public function getLinesId(): Collection
     {
-        return $this->line;
+        return $this->lines_id;
     }
 
-    public function setLine(?Line $line): static
+    public function addLinesId(Line $linesId): static
     {
-        $this->line = $line;
+        if (!$this->lines_id->contains($linesId)) {
+            $this->lines_id->add($linesId);
+            $linesId->setTrain($this);
+        }
 
         return $this;
     }
+
+    public function removeLinesId(Line $linesId): static
+    {
+        if ($this->lines_id->removeElement($linesId)) {
+            // set the owning side to null (unless already changed)
+            if ($linesId->getTrain() === $this) {
+                $linesId->setTrain(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }
