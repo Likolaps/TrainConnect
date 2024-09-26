@@ -17,7 +17,7 @@
 				<th>Delay</th>
 			</tr>
 			{% for line in lines %}
-				<tr data-toggle="collapse" data-target="{{ '#accordion' ~ line.id }}" class="clickable">
+				<tr data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
 					<td>{{ line.train.type }}</td>
 					{% set missing = true %}
 					{% for stop in line.getStops() %}
@@ -46,10 +46,11 @@
 					<td>{{ line.delay }}</td>
 				</tr>
 				{% for stop in line.getStops() %}
-					<tr colspan="6" id="{{ 'accordion' ~ line.id }}" class="collapse">
+					<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
 						<td>{{ stop.station.name }}</td>
 						<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
 						<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
