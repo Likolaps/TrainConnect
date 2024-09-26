@@ -93,7 +93,7 @@ class Line
         return $this;
     }
 
-    public function getStopInOrder(): Collection
+    public function getStopsInOrder(): Collection
     {
         $firstStop = null;
         $lastStop = null;

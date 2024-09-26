@@ -1,26 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!
+{% block title %} Train Connect
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
-
-	<div class="example-wrapper">
+	<div class="container">
 		<h1>Lines</h1>
 
-		<table class = " table table-secondary table-striped">
+		<table class = "table table-secondary table-striped table-hover">
 			<tr>
 				<th>Train</th>
 				<th>Departure</th>
@@ -30,14 +17,13 @@
 				<th>Delay</th>
 			</tr>
 			{% for line in lines %}
-				<tr>
+				<tr data-toggle="collapse" data-target="{{ '#accordion' ~ line.id }}" class="clickable">
 					<td>{{ line.train.type }}</td>
 					{% set missing = true %}
 					{% for stop in line.getStops() %}
-
 						{% if stop.dateTimeArrival is null %}
 							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeDeparture|date('H:i')}}</td>
+							<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
 							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
@@ -49,7 +35,7 @@
 					{% for stop in line.getStops() %}
 						{% if stop.dateTimeDeparture is null %}
 							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeArrival|date('H:i')}}</td>
+							<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
 							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
@@ -59,6 +45,15 @@
 					{% endif %}
 					<td>{{ line.delay }}</td>
 				</tr>
+				{% for stop in line.getStops() %}
+					<tr colspan="6" id="{{ 'accordion' ~ line.id }}" class="collapse">
+						<td>{{ stop.station.name }}</td>
+						<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
+						<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+						<td></td>
+						<td></td>
+					</tr>
+					{% endfor %}
 			{% endfor %}
 		</table>
 	</div>
