@@ -21,6 +21,9 @@
                 <img src={{asset("img/train-blanc.webp")}} alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
                 TrainConnect
                 </a>
+                {% if not is_granted('ROLE_USER') %}
+                <a href="{{path('app_login')}}" class = "btn btn-outline-success"> Se Connecter</a>
+                {% endif %}
             </div>
         </nav>
         
