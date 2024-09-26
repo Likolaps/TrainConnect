@@ -120,8 +120,6 @@ class Line
                         $firstArray = new Collection();
                         $secondArray = new Collection();
 
-                        //force Stop type
-
                         foreach ($stopsArray as $key => $value) {
                             if ($key < $i) {
                                 $firstArray->add($value);
@@ -135,6 +133,8 @@ class Line
                         foreach ($secondArray as $value) {
                             $firstArray->add($value);
                         }
+
+                        $stopsArray = $firstArray;
                         $added = true;
                         break;
                     }
@@ -145,6 +145,15 @@ class Line
                 }
             }
         }
+
+        // adding first and last stop
+        $tempArray = new Collection();
+        $tempArray->add($firstStop);
+        foreach ($stopsArray as $stopArray) {
+            $tempArray->add($stopArray);
+        }
+        $tempArray->add($lastStop);
+        $stopsArray = $tempArray;
 
         return $stopsArray;
     }
