@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile Page
+{% endblock %}
+
+{% block body %}
+
+    <div> 
+    <ul>
+    <li>Lastname : {{ app.user.lastname }}</li>
+    <li>Firstname : {{ app.user.firstname }}</li>
+    <li>Email : {{ app.user.userIdentifier}}</li>
+    </ul>
+    </div>
+ 
+
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as
+            {{ app.user.userIdentifier }},
+            <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+	{% endif %}
+{% endblock %}
