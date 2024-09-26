@@ -6,6 +6,7 @@ use App\Repository\LineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Array_;
 
 #[ORM\Entity(repositoryClass: LineRepository::class)]
 class Line
@@ -90,5 +91,61 @@ class Line
         }
 
         return $this;
+    }
+
+    public function getStopInOrder(): Collection
+    {
+        $firstStop = null;
+        $lastStop = null;
+
+        $stopsArray = new Collection();
+
+        foreach ($this->stops as $stop) {
+            if ($stop->getDateTimeArrival() == null && $firstStop == null) {
+                $firstStop = $stop;
+            }
+            if ($stop->getDateTimeDeparture() == null && $lastStop == null) {
+                $lastStop = $stop;
+            }
+
+            // getting stops in order of their datetime arrival
+            if ($stopsArray->isEmpty()) {
+                $stopsArray->add($stop);
+            } else {
+                $i = 0;
+                $added = false;
+                foreach ($stopsArray as $stopArray) {
+                    if ($stop->getDateTimeArrival() < $stopArray->getDateTimeArrival()) {
+                        // splicing the array to add in the middle
+                        $firstArray = new Collection();
+                        $secondArray = new Collection();
+
+                        //force Stop type
+
+                        foreach ($stopsArray as $key => $value) {
+                            if ($key < $i) {
+                                $firstArray->add($value);
+                            } else {
+                                $secondArray->add($value);
+                            }
+                        }
+                        $firstArray->add($stop);
+
+                        //adding back the second array
+                        foreach ($secondArray as $value) {
+                            $firstArray->add($value);
+                        }
+                        $added = true;
+                        break;
+                    }
+                    $i++;
+                }
+                if (!$added) {
+                    $stopsArray->add($stop);
+                }
+            }
+        }
+
+        return $stopsArray;
     }
 }
