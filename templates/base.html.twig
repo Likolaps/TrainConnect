@@ -22,7 +22,9 @@
                 TrainConnect
                 </a>
                 {% if not is_granted('ROLE_USER') %}
-                <a href="{{path('app_login')}}" class = "btn btn-outline-success"> Se Connecter</a>
+                <a href="{{path('app_login')}}" class = "btn btn-outline-success"> Log In</a>
+                {% else %}                
+                    <a href="{{path('app_profile')}}"><img src={{asset("img/user.webp")}} alt="userIcon" width="90" height="50" class="d-inline-block align-text-top"></a>
                 {% endif %}
             </div>
         </nav>
