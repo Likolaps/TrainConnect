@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Train Connect
+{% block title %}
+	Train Connect
 {% endblock %}
 
 {% block body %}
 	<div class="container">
 		<h1>Lines</h1>
 
-		<table class = "table table-secondary table-striped table-hover">
+		<table class="table table-secondary table-striped table-hover">
 			<tr>
 				<th>Train</th>
 				<th>Departure</th>
@@ -45,16 +46,16 @@
 					{% endif %}
 					<td>{{ line.delay }}</td>
 				</tr>
-				{% for stop in line.getStops() %}
+				{% for stop in line.getStopsInOrder() %}
 					<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
 						<td>{{ stop.station.name }}</td>
-						<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
-						<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+						<td>{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}</td>
+						<td>{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}</td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
-					{% endfor %}
+				{% endfor %}
 			{% endfor %}
 		</table>
 	</div>
