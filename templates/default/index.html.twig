@@ -1,65 +1,78 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %} Train Connect {% endblock %} {%
+block body %}
+<div class="container">
+	<h1>Lines</h1>
+	<div class="mb-3">
+		<form action="" method="post" class="row">
+			<div class="col-9 row">
+				<div class="col">
+					<label for="Departure" class="form-label">
+					<b>Departure City</b>
+					</label>
+					<input class="form-control" type="text" name="Departure" id="Departure" />
+				</div>
+				<div class="col">
+					<label for="Arrival" class="form-label">
+					<b>Arrival City</b>
+					</label>
+					<input class="form-control" type="text" name="Arrival" id="Arrival" />
+				</div>	
+			</div>
 
-{% block title %}
-	Train Connect
-{% endblock %}
 
-{% block body %}
-	<div class="container">
-		<h1>Lines</h1>
-
-		<table class="table table-secondary table-striped table-hover">
-			<tr>
-			
-				<th>Train</th>
-				<th>Departure</th>
-				<th>Departure time</th>
-				<th>Arrival</th>
-				<th>Arrival time</th>
-				<th>Delay</th>
-				<th>Favorite</th>
-			</tr>
-			{% for line in lines %}
-				<tr data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
-					<td>{{ line.train.type }}</td>
-					{% set missing = true %}
-					{% for stop in line.getStops() %}
-						{% if stop.dateTimeArrival is null %}
-							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
-							{% set missing = false %}
-						{% endif %}
-					{% endfor %}
-					{% if missing %}
-						<td></td>
-						<td></td>
-					{% endif %}
-					{% set missing = true %}
-					{% for stop in line.getStops() %}
-						{% if stop.dateTimeDeparture is null %}
-							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
-							{% set missing = false %}
-						{% endif %}
-					{% endfor %}
-					{% if missing %}
-						<td></td>
-						<td></td>
-					{% endif %}
-					<td>{{ line.delay }}</td>
-					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">Add to fav</a></td>
-				</tr>
-				{% for stop in line.getStopsInOrder() %}
-					<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
-						<td>{{ stop.station.name }}</td>
-						<td>{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}</td>
-						<td>{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				{% endfor %}
-			{% endfor %}
-		</table>
+			<div class="col-3 d-flex justify-content-end flex-column align-items-start">
+				<button type="submit" class="btn btn-primary">Search</button>
+			</div>
+		</form>
+		
 	</div>
+	<table class="table table-secondary table-striped table-hover">
+		<tr>
+			<th>Train</th>
+			<th>Departure</th>
+			<th>Departure time</th>
+			<th>Arrival</th>
+			<th>Arrival time</th>
+			<th>Delay</th>
+			<th>Favorite</th>
+		</tr>
+		{% for line in lines %}
+		<tr data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
+			<td>{{ line.train.type }}</td>
+			{% set missing = true %} {% for stop in line.getStops() %} {% if
+			stop.dateTimeArrival is null %}
+			<td>{{ stop.station.name }}</td>
+			<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
+			{% set missing = false %} {% endif %} {% endfor %} {% if missing %}
+			<td></td>
+			<td></td>
+			{% endif %} {% set missing = true %} {% for stop in line.getStops() %} {%
+			if stop.dateTimeDeparture is null %}
+			<td>{{ stop.station.name }}</td>
+			<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+			{% set missing = false %} {% endif %} {% endfor %} {% if missing %}
+			<td></td>
+			<td></td>
+			{% endif %}
+			<td>{{ line.delay }}</td>
+			<td>
+				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning">Add to fav</a>
+			</td>
+		</tr>
+		{% for stop in line.getStopsInOrder() %}
+		<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
+			<td>{{ stop.station.name }}</td>
+			<td>
+				{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}
+			</td>
+			<td>
+				{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		{% endfor %} {% endfor %}
+	</table>
+</div>
 {% endblock %}

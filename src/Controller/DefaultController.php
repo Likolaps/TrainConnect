@@ -14,6 +14,10 @@ class DefaultController extends AbstractController
     {
         $lines = $lineRepository->findAll();
 
+        if (isset($_POST)&& $_POST != []) {
+            dd($_POST);
+        }
+
 
         return $this->render('default/index.html.twig', [
             'lines' => $lines,

@@ -43,5 +43,7 @@ class FavoritesController extends AbstractController
             $entityManager->flush();
         }
     }
+
+    
 }
 
