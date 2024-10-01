@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!
-{% endblock %}
+{% block title %}Hello FavoritesController!{% endblock %}
 
 {% block body %}
 	<style>
@@ -60,7 +59,7 @@
 						<td></td>
 					{% endif %}
 					<td>{{ line.delay }}</td>
-					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">Add to fav</a></td>
+					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">delete</a></td>
 				</tr>
 			{% endfor %}
 		</table>

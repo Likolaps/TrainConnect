@@ -28,9 +28,16 @@ class Line
     #[ORM\OneToMany(targetEntity: Stop::class, mappedBy: 'line')]
     private Collection $stops;
 
+    /**
+     * @var Collection<int, Favorites>
+     */
+    #[ORM\OneToMany(targetEntity: Favorites::class, mappedBy: 'line')]
+    private Collection $favorites;
+
     public function __construct()
     {
         $this->stops = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,6 +93,36 @@ class Line
             // set the owning side to null (unless already changed)
             if ($stop->getLine() === $this) {
                 $stop->setLine(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorites>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorites $favorite): static
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+            $favorite->setLine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorites $favorite): static
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            // set the owning side to null (unless already changed)
+            if ($favorite->getLine() === $this) {
+                $favorite->setLine(null);
             }
         }
 
