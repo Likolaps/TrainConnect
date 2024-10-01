@@ -4,39 +4,42 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Stop index</h1>
+	<div class="container">
+		<a href="{{ path('app_admin')}}">Back</a>
+		<h1>Stop index</h1>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Line</th>
-				<th>Date_time_departure</th>
-				<th>Date_time_arrival</th>
-				<th>station</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for stop in stops %}
+		<table class="table">
+			<thead>
 				<tr>
-					<td>{{ stop.id }}</td>
-					<td>{{ stop.line.id }}</td>
-					<td>{{ stop.dateTimeDeparture ? stop.dateTimeDeparture|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ stop.dateTimeArrival ? stop.dateTimeArrival|date('Y-m-d H:i:s') : '' }}</td>
-					<td>{{ stop.station.name }}</td>
-					<td>
-						<a href="{{ path('app_stop_show', {'id': stop.id}) }}">show</a>
-						<a href="{{ path('app_stop_edit', {'id': stop.id}) }}">edit</a>
-					</td>
+					<th>Id</th>
+					<th>Line</th>
+					<th>Date_time_departure</th>
+					<th>Date_time_arrival</th>
+					<th>station</th>
+					<th>actions</th>
 				</tr>
-			{% else %}
-				<tr>
-					<td colspan="4">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{% for stop in stops %}
+					<tr>
+						<td>{{ stop.id }}</td>
+						<td>{{ stop.line.id }}</td>
+						<td>{{ stop.dateTimeDeparture ? stop.dateTimeDeparture|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ stop.dateTimeArrival ? stop.dateTimeArrival|date('Y-m-d H:i:s') : '' }}</td>
+						<td>{{ stop.station.name }}</td>
+						<td>
+							<a href="{{ path('app_stop_show', {'id': stop.id}) }}">show</a>
+							<a href="{{ path('app_stop_edit', {'id': stop.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-	<a href="{{ path('app_stop_new') }}">Create new</a>
+		<a href="{{ path('app_stop_new') }}">Create new</a>
+	</div>
 {% endblock %}
