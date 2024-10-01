@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/stop')]
 final class StopController extends AbstractController
 {
@@ -71,7 +73,7 @@ final class StopController extends AbstractController
     #[Route('/{id}', name: 'app_stop_delete', methods: ['POST'])]
     public function delete(Request $request, Stop $stop, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$stop->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $stop->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($stop);
             $entityManager->flush();
         }
