@@ -6,6 +6,7 @@ use App\Repository\LineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Array_;
 
 #[ORM\Entity(repositoryClass: LineRepository::class)]
 class Line
@@ -98,7 +99,6 @@ class Line
 
         return $this;
     }
-
     /**
      * @return Collection<int, Favorites>
      */
@@ -106,7 +106,7 @@ class Line
     {
         return $this->favorites;
     }
-
+  
     public function addFavorite(Favorites $favorite): static
     {
         if (!$this->favorites->contains($favorite)) {
@@ -128,4 +128,81 @@ class Line
 
         return $this;
     }
+  
+    // get all stops in order of their time of arrival
+    public function getStopsInOrder(): array
+    {
+        $stops = $this->stops->toArray();
+        usort($stops, fn($a, $b) => $a->getDateTimeArrival() <=> $b->getDateTimeArrival());
+        return $stops;
+    }
+
+    // public function getStopsInOrder(): Collection
+    // {
+    //     $firstStop = null;
+    //     $lastStop = null;
+
+    //     $stopsArray = new ArrayCollection();
+
+    //     foreach ($this->stops as $stop) {
+    //         if ($stop->getDateTimeArrival() == null && $firstStop == null) {
+    //             $firstStop = $stop;
+    //             continue;
+    //         }
+    //         if ($stop->getDateTimeDeparture() == null && $lastStop == null) {
+    //             $lastStop = $stop;
+    //             continue;
+    //         }
+
+    //         // getting stops in order of their datetime arrival
+    //         if ($stopsArray->isEmpty()) {
+    //             $stopsArray->add($stop);
+    //         } else {
+    //             $i = 0;
+    //             $added = false;
+    //             foreach ($stopsArray as $stopArray) {
+    //                 if ($stop->getDateTimeArrival() < $stopArray->getDateTimeArrival()) {
+    //                     // splicing the array to add in the middle
+    //                     $firstArray = new ArrayCollection();
+    //                     $secondArray = new ArrayCollection();
+
+    //                     foreach ($stopsArray as $key => $value) {
+    //                         if ($key < $i) {
+    //                             $firstArray->add($value);
+    //                         } else {
+    //                             $secondArray->add($value);
+    //                         }
+    //                     }
+    //                     $firstArray->add($stop);
+
+    //                     //adding back the second array
+    //                     foreach ($secondArray as $value) {
+    //                         $firstArray->add($value);
+    //                     }
+
+    //                     $stopsArray = $firstArray;
+    //                     $added = true;
+    //                     break;
+    //                 }
+    //                 $i++;
+    //             }
+    //             if (!$added) {
+    //                 $stopsArray->add($stop);
+    //             }
+    //         }
+    //     }
+
+
+
+    //     // adding first and last stop
+    //     $tempArray = new ArrayCollection();
+    //     $tempArray->add($firstStop);
+    //     foreach ($stopsArray as $stopArray) {
+    //         $tempArray->add($stopArray);
+    //     }
+    //     $tempArray->add($lastStop);
+    //     $stopsArray = $tempArray;
+
+    //     return $stopsArray;
+    // }
 }
