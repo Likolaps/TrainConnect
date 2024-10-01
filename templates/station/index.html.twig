@@ -1,37 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Station index{% endblock %}
+{% block title %}Station index
+{% endblock %}
 
 {% block body %}
-    <h1>Station index</h1>
+	<div class="container">
+		<a href="{{ path('app_admin')}}">Back</a>
+		<h1>Station index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>City</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for station in stations %}
-            <tr>
-                <td>{{ station.id }}</td>
-                <td>{{ station.name }}</td>
-                <td>{{ station.city }}</td>
-                <td>
-                    <a href="{{ path('app_station_show', {'id': station.id}) }}">show</a>
-                    <a href="{{ path('app_station_edit', {'id': station.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>City</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for station in stations %}
+					<tr>
+						<td>{{ station.id }}</td>
+						<td>{{ station.name }}</td>
+						<td>{{ station.city }}</td>
+						<td>
+							<a href="{{ path('app_station_show', {'id': station.id}) }}">show</a>
+							<a href="{{ path('app_station_edit', {'id': station.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-    <a href="{{ path('app_station_new') }}">Create new</a>
+		<a href="{{ path('app_station_new') }}">Create new</a>
+	</div>
 {% endblock %}
