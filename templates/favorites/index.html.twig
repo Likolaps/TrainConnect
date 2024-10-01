@@ -1,14 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	Train Connect
-{% endblock %}
+{% block title %}Hello FavoritesController!{% endblock %}
 
 {% block body %}
-	<div class="container">
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
 		<h1>Lines</h1>
 
-		<table class="table table-secondary table-striped table-hover">
+		<table class = " table table-secondary table-striped">
 			<tr>
 			
 				<th>Train</th>
@@ -20,13 +31,14 @@
 				<th>Favorite</th>
 			</tr>
 			{% for line in lines %}
-				<tr data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
+				<tr>
 					<td>{{ line.train.type }}</td>
 					{% set missing = true %}
 					{% for stop in line.getStops() %}
+
 						{% if stop.dateTimeArrival is null %}
 							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
+							<td>{{ stop.dateTimeDeparture|date('H:i')}}</td>
 							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
@@ -38,7 +50,7 @@
 					{% for stop in line.getStops() %}
 						{% if stop.dateTimeDeparture is null %}
 							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+							<td>{{ stop.dateTimeArrival|date('H:i')}}</td>
 							{% set missing = false %}
 						{% endif %}
 					{% endfor %}
@@ -47,18 +59,8 @@
 						<td></td>
 					{% endif %}
 					<td>{{ line.delay }}</td>
-					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">Add to fav</a></td>
+					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">delete</a></td>
 				</tr>
-				{% for stop in line.getStopsInOrder() %}
-					<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
-						<td>{{ stop.station.name }}</td>
-						<td>{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}</td>
-						<td>{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				{% endfor %}
 			{% endfor %}
 		</table>
 	</div>
