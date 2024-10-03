@@ -4,22 +4,21 @@
 {% endblock %}
 
 {% block body %}
-
-    <div> 
-    <ul>
-    <li>Lastname : {{ app.user.lastname }}</li>
-    <li>Firstname : {{ app.user.firstname }}</li>
-    <li>Email : {{ app.user.userIdentifier}}</li>
-    </ul>
+    <div class = "d-flex justify-content-center align-items-center " style="height: 75vh">
+        <div class = "alert alert-secondary p-5 rounded border border-dark border-3" > 
+            <ul class="">
+                <li>Lastname : {{ app.user.lastname }}</li>
+                <li>Firstname : {{ app.user.firstname }}</li>
+                <li>Email : {{ app.user.userIdentifier}}</li>
+                <li>You are logged in as{{ app.user.userIdentifier }},
+                <a href="{{ path('app_logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
     </div>
+    
  
 
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as
-            {{ app.user.userIdentifier }},
-            <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-	{% endif %}
+    
 {% endblock %}
