@@ -33,3 +33,16 @@
   .dropdown a:hover {background-color: #ddd;}
   
   .shows {display: block;}
+
+ 
+  .clickable-row {
+    cursor: pointer;
+}
+
+.non-clickable {
+    pointer-events: none; /* Désactive les clics pour la cellule entière */
+}
+
+.non-clickable a {
+    pointer-events: auto; /* Réactive les clics uniquement sur le bouton à l'intérieur */
+}

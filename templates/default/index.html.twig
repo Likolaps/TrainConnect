@@ -27,17 +27,18 @@ block body %}
 		
 	</div>
 	<table class="table table-secondary table-striped table-hover">
-		<tr>
+		{# <tr>
 			<th>Train</th>
 			<th>Departure</th>
 			<th>Departure time</th>
-			<th>Arrival</th>
 			<th>Arrival time</th>
+			<th>Arrival</th>
 			<th>Delay</th>
 			<th>Favorite</th>
-		</tr>
+		</tr> #}
 		{% for line in lines %}
-		<tr data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
+		<tr >
+			
 			<td>{{ line.train.type }}</td>
 			{% set missing = true %} {% for stop in line.getStops() %} {% if
 			stop.dateTimeArrival is null %}
@@ -48,19 +49,25 @@ block body %}
 			<td></td>
 			{% endif %} {% set missing = true %} {% for stop in line.getStops() %} {%
 			if stop.dateTimeDeparture is null %}
-			<td>{{ stop.station.name }}</td>
 			<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+			<td>{{ stop.station.name }}</td>
 			{% set missing = false %} {% endif %} {% endfor %} {% if missing %}
 			<td></td>
 			<td></td>
 			{% endif %}
 			<td>{{ line.delay }}</td>
 			<td>
-				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning">Add to fav</a>
-			</td>
+				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning add-to-fav">Add to fav</a>
+			</td>	
+			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable btn-secondary"> <button class = "btn btn-primary">details</button>  </td>
 		</tr>
+
+			
+				
+
 		{% for stop in line.getStopsInOrder() %}
 		<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
+			<td></td>
 			<td>{{ stop.station.name }}</td>
 			<td>
 				{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}
@@ -72,6 +79,8 @@ block body %}
 			<td></td>
 			<td></td>
 			<td></td>
+			
+			
 		</tr>
 		{% endfor %} {% endfor %}
 	</table>

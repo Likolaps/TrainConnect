@@ -29,7 +29,7 @@ class FavoritesController extends AbstractController
     }
 
     #[Route('/favorites/add/{id}', name: 'app_add_to_favorites')]
-    public function addToFav(LineRepository $lines, $id, EntityManagerInterface $entityManager,FavoritesRepository $favoritesRepository): void
+    public function addToFav(LineRepository $lines, $id, EntityManagerInterface $entityManager,FavoritesRepository $favoritesRepository): Response
     {
         
         $line= $lines->find($id);
@@ -42,8 +42,9 @@ class FavoritesController extends AbstractController
             $entityManager->persist($fav);
             $entityManager->flush();
         }
-    }
 
-    
+
+        return $this->redirectToRoute('app_favorites');
+    }
 }
 
