@@ -26,7 +26,7 @@ block body %}
 		</form>
 		
 	</div>
-	<table class="table table-secondary table-striped table-hover">
+	<table class="table table-secondary table-striped table-hover rounded-3 overflow-hidden ">
 		{# <tr>
 			<th>Train</th>
 			<th>Departure</th>
@@ -37,7 +37,7 @@ block body %}
 			<th>Favorite</th>
 		</tr> #}
 		{% for line in lines %}
-		<tr >
+		<tr>
 			
 			<td>{{ line.train.type }}</td>
 			{% set missing = true %} {% for stop in line.getStops() %} {% if
@@ -59,7 +59,11 @@ block body %}
 			<td>
 				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning add-to-fav">Add to fav</a>
 			</td>	
-			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable btn-secondary"> <button class = "btn btn-primary">details</button>  </td>
+			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable"> 
+				<input type = "image" src={{asset("img/details.png")}} width="30" height="30" class=""></input> 
+			</td>
+
+			{# public\img\png-transparent-arrow-computer-icons-down-arrow-angle-hand-logo-thumbnail.png #}
 		</tr>
 
 			
