@@ -106,7 +106,7 @@ class Line
     {
         return $this->favorites;
     }
-  
+
     public function addFavorite(Favorites $favorite): static
     {
         if (!$this->favorites->contains($favorite)) {
@@ -128,13 +128,24 @@ class Line
 
         return $this;
     }
-  
+
     // get all stops in order of their time of arrival
     public function getStopsInOrder(): array
     {
         $stops = $this->stops->toArray();
-        usort($stops, fn($a, $b) => $a->getDateTimeArrival() <=> $b->getDateTimeArrival());
+        usort($stops, function ($a, $b) {
+            return $a->getDateTimeArrival() <=> $b->getDateTimeArrival();
+        });
         return $stops;
+    }
+
+    public function getAllStations(): array
+    {
+        $stations = [];
+        foreach ($this->stops as $stop) {
+            $stations[] = $stop->getStation();
+        }
+        return $stations;
     }
 
     // public function getStopsInOrder(): Collection

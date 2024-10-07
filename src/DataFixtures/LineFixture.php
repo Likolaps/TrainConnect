@@ -9,6 +9,7 @@ use App\Entity\Train;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use PHPUnit\Framework\Constraint\Count;
 
 class LineFixture extends Fixture
 {
@@ -52,11 +53,18 @@ class LineFixture extends Fixture
         }
 
         for ($i = 0; $i < 200; $i++) {
+            $line = $lines[rand(0, count($lines) - 1)];
             $stop = new Stop();
             $stop->setStation($stations[rand(0, count($stations) - 1)]);
-            $stop->setLine($lines[rand(0, count($lines) - 1)]);
-            $stop->setDateTimeArrival($faker->dateTimeBetween('-1 day', 'now'));
-            $stop->setDateTimeDeparture($faker->dateTimeBetween('now', '+1 day'));
+            $stop->setLine($line);
+            if ($line->getStops()->isEmpty()) {
+                $stop->setDateTimeDeparture($faker->dateTimeBetween('-3 hours', 'now'));
+            } else {
+                $datetime = $line->getStops()->last()->getDateTimeArrival();
+                $stop->setDateTimeDeparture($faker->dateTimeBetween($datetime, '+3 hours'));
+            }
+            $stop->setDateTimeArrival($faker->dateTimeBetween($stop->getDateTimeDeparture(), '+3 hours'));
+            $line->addStop($stop);
 
             $manager->persist($stop);
             $stops[] = $stop;
@@ -64,18 +72,46 @@ class LineFixture extends Fixture
 
         // creating departure and arrival stops
         for ($i = 0; $i < count($lines); $i++) {
+
+            // arrival
+
+            $tempStops = $lines[$i]->getStopsInOrder();
+
+            //var_dump($tempStops);
+
             $stop = new Stop();
-            $stop->setStation($stations[rand(0, count($stations) - 1)]);
+            $lineStations = $lines[$i]->getAllStations();
+
+            $tempStation = $stations[rand(0, count($stations) - 1)];
+            do {
+                $tempStation = $stations[rand(0, count($stations) - 1)];
+            } while (in_array($tempStation, $lineStations));
+
+            $stop->setStation($tempStation);
             $stop->setLine($lines[$i]);
-            $stop->setDateTimeArrival($faker->dateTimeBetween('-1 day', 'now'));
+            $datetime = $tempStops[Count($tempStops) - 1]->getDateTimeArrival();
+            $stop->setDateTimeArrival($faker->dateTimeBetween($datetime, '+4 hours'));
 
             $manager->persist($stop);
             $stops[] = $stop;
 
+
+            // departure
+
+            $tempStops = $lines[$i]->getStopsInOrder();
+
+            $lineStations = $lines[$i]->getAllStations();
+
+            $tempStation = $stations[rand(0, count($stations) - 1)];
+            do {
+                $tempStation = $stations[rand(0, count($stations) - 1)];
+            } while (in_array($tempStation, $lineStations));
+
             $stop = new Stop();
-            $stop->setStation($stations[rand(0, count($stations) - 1)]);
+            $stop->setStation($tempStation);
             $stop->setLine($lines[$i]);
-            $stop->setDateTimeDeparture($faker->dateTimeBetween('now', '+1 day'));
+            $datetime = $tempStops[0]->getDateTimeDeparture();
+            $stop->setDateTimeDeparture($faker->dateTimeBetween('-4 hours', $datetime));
 
             $manager->persist($stop);
             $stops[] = $stop;
