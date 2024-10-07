@@ -1,4 +1,8 @@
-{% extends 'base.html.twig' %} {% block title %} Train Connect {% endblock %} {%
+{% extends 'base.html.twig' %}
+{% block title %}
+	Train Connect
+{% endblock %}
+{%
 block body %}
 <div class="container">
 	<h1>Lines</h1>
@@ -7,16 +11,16 @@ block body %}
 			<div class="col-9 row">
 				<div class="col">
 					<label for="Departure" class="form-label">
-					<b>Departure City</b>
+						<b>Departure City</b>
 					</label>
-					<input class="form-control" type="text" name="Departure" id="Departure" />
+					<input class="form-control" type="text" name="Departure" id="Departure"/>
 				</div>
 				<div class="col">
 					<label for="Arrival" class="form-label">
-					<b>Arrival City</b>
+						<b>Arrival City</b>
 					</label>
-					<input class="form-control" type="text" name="Arrival" id="Arrival" />
-				</div>	
+					<input class="form-control" type="text" name="Arrival" id="Arrival"/>
+				</div>
 			</div>
 
 
@@ -24,69 +28,80 @@ block body %}
 				<button type="submit" class="btn btn-primary">Search</button>
 			</div>
 		</form>
-		
+
 	</div>
-	<table class="table table-secondary table-striped table-hover rounded-3 overflow-hidden ">
+	<table
+		class="table table-secondary table-striped table-hover rounded-3 overflow-hidden ">
 		{# <tr>
-			<th>Train</th>
-			<th>Departure</th>
-			<th>Departure time</th>
-			<th>Arrival time</th>
-			<th>Arrival</th>
-			<th>Delay</th>
-			<th>Favorite</th>
-		</tr> #}
+					<th>Train</th>
+					<th>Departure</th>
+					<th>Departure time</th>
+					<th>Arrival time</th>
+					<th>Arrival</th>
+					<th>Delay</th>
+					<th>Favorite</th>
+				</tr> #}
 		{% for line in lines %}
-		<tr>
-			
-			<td>{{ line.train.type }}</td>
-			{% set missing = true %} {% for stop in line.getStops() %} {% if
+			<tr>
+
+				<td>{{ line.train.type }}</td>
+				{% set missing = true %}
+				{% for stop in line.getStops() %}
+					{% if
 			stop.dateTimeArrival is null %}
-			<td>{{ stop.station.name }}</td>
-			<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
-			{% set missing = false %} {% endif %} {% endfor %} {% if missing %}
-			<td></td>
-			<td></td>
-			{% endif %} {% set missing = true %} {% for stop in line.getStops() %} {%
+						<td>{{ stop.station.name }}</td>
+						<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
+						{% set missing = false %}
+					{% endif %}
+				{% endfor %}
+				{% if missing %}
+					<td></td>
+					<td></td>
+				{% endif %}
+				{% set missing = true %}
+				{% for stop in line.getStops() %}
+					{%
 			if stop.dateTimeDeparture is null %}
-			<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
-			<td>{{ stop.station.name }}</td>
-			{% set missing = false %} {% endif %} {% endfor %} {% if missing %}
-			<td></td>
-			<td></td>
-			{% endif %}
-			<td>{{ line.delay }}</td>
-			<td>
-				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning add-to-fav">Add to fav</a>
-			</td>	
-			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable"> 
-				<input type = "image" src={{asset("img/details.png")}} width="30" height="30" class=""></input> 
-			</td>
+						<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+						<td>{{ stop.station.name }}</td>
+						{% set missing = false %}
+					{% endif %}
+				{% endfor %}
+				{% if missing %}
+					<td></td>
+					<td></td>
+				{% endif %}
+				<td>{{ line.delay }}</td>
+				<td>
+					{% if app.user %}
+						<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning add-to-fav">Add to fav</a>
+					{% endif %}
+				</td>
+				<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ line.id }}" class="clickable">
+					<input type="image" src={{asset("img/details.png")}} width="30" height="30" class=""></td>
+			</tr>
+		</input>
+	</td>
 
-			{# public\img\png-transparent-arrow-computer-icons-down-arrow-angle-hand-logo-thumbnail.png #}
-		</tr>
+	{# public\img\png-transparent-arrow-computer-icons-down-arrow-angle-hand-logo-thumbnail.png #}
+</tr>
 
-			
-				
 
-		{% for stop in line.getStopsInOrder() %}
-		<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
-			<td></td>
-			<td>{{ stop.station.name }}</td>
-			<td>
-				{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}
-			</td>
-			<td>
-				{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}
-			</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			
-			
-		</tr>
-		{% endfor %} {% endfor %}
-	</table>
-</div>
-{% endblock %}
+{% for stop in line.getStopsInOrder() %}
+	<tr id="{{ 'accordion' ~ line.id }}" class="collapse table-danger">
+		<td></td>
+		<td>{{ stop.station.name }}</td>
+		<td>
+			{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}
+		</td>
+		<td>
+			{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}
+		</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+
+
+	</tr>
+{% endfor %}{% endfor %}</table></div>{% endblock %}
