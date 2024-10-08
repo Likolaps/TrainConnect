@@ -3,65 +3,100 @@
 {% block title %}Hello FavoritesController!{% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
+<style>
+	.example-wrapper {
+		margin: 1em auto;
+		max-width: 800px;
+		width: 95%;
+		font: 18px / 1.5 sans-serif;
+	}
 
-	<div class="example-wrapper">
-		<h1>Lines</h1>
+	.example-wrapper code {
+		background: #F5F5F5;
+		padding: 2px 6px;
+	}
+</style>
 
-		<table class = " table table-secondary table-striped">
-			<tr>
-			
-				<th>Train</th>
-				<th>Departure</th>
-				<th>Departure time</th>
-				<th>Arrival</th>
-				<th>Arrival time</th>
-				<th>Delay</th>
-				<th>Favorite</th>
-			</tr>
-			{% for line in lines %}
-				<tr>
-					<td>{{ line.train.type }}</td>
-					{% set missing = true %}
-					{% for stop in line.getStops() %}
+<div class="example-wrapper">
+	<h1>Lines</h1>
 
-						{% if stop.dateTimeArrival is null %}
-							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeDeparture|date('H:i')}}</td>
-							{% set missing = false %}
-						{% endif %}
-					{% endfor %}
-					{% if missing %}
-						<td></td>
-						<td></td>
-					{% endif %}
-					{% set missing = true %}
-					{% for stop in line.getStops() %}
-						{% if stop.dateTimeDeparture is null %}
-							<td>{{ stop.station.name }}</td>
-							<td>{{ stop.dateTimeArrival|date('H:i')}}</td>
-							{% set missing = false %}
-						{% endif %}
-					{% endfor %}
-					{% if missing %}
-						<td></td>
-						<td></td>
-					{% endif %}
-					<td>{{ line.delay }}</td>
-					<td><a href = "{{path('app_add_to_favorites',{id: line.id})}}" class = "btn btn-warning">delete</a></td>
-				</tr>
+	<table class="table table-secondary table-hover rounded-3 overflow-hidden ">
+		<tr>
+			<th>Train</th>
+			<th>Departure</th>
+			<th>Departure time</th>
+			<th>Arrival time</th>
+			<th>Arrival</th>
+			<th>Delay</th>
+			<th>Favorite</th>
+			<th>Details</th>
+		</tr>
+		{% for fav in favs %}
+		<tr>
+
+			<td>{{ fav.line.train.type }}</td>
+			{% set missing = true %}
+			{% for stop in fav.line.getStops() %}
+			{% if
+			stop.dateTimeArrival is null %}
+			<td>{{ stop.station.name }}</td>
+			<td>{{ stop.dateTimeDeparture|date('H:i') }}</td>
+			{% set missing = false %}
+			{% endif %}
 			{% endfor %}
-		</table>
-	</div>
+			{% if missing %}
+			<td></td>
+			<td></td>
+			{% endif %}
+			{% set missing = true %}
+			{% for stop in fav.line.getStops() %}
+			{%
+			if stop.dateTimeDeparture is null %}
+			<td>{{ stop.dateTimeArrival|date('H:i') }}</td>
+			<td>{{ stop.station.name }}</td>
+			{% set missing = false %}
+			{% endif %}
+			{% endfor %}
+			{% if missing %}
+			<td></td>
+			<td></td>
+			{% endif %}
+			<td>{{ fav.line.delay }}</td>
+			<td>
+				{% if app.user %}
+				<a href="{{ path('app_add_to_favorites', { id: fav.line.id }) }}" class="btn btn-warning add-to-fav">Add
+					to fav</a>
+				{% endif %}
+			</td>
+			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ fav.line.id }}" class="clickable">
+				<input type="image" src={{asset("img/details.png")}} width="30" height="30" class="">
+			</td>
+		</tr>
+		</input>
+		</td>
+
+		{# public\img\png-transparent-arrow-computer-icons-down-arrow-angle-hand-logo-thumbnail.png #}
+		</tr>
+
+
+		{% for stop in fav.line.getStopsInOrder() %}
+		<tr id="{{ 'accordion' ~ fav.line.id }}" class="collapse table-danger">
+			<td></td>
+			<td>{{ stop.station.name }}</td>
+			<td>
+				{{ stop.dateTimeDeparture is null ? ' ' :stop.dateTimeDeparture|date('H:i') }}
+			</td>
+			<td>
+				{{ stop.dateTimeArrival is null ? ' ' :stop.dateTimeArrival|date('H:i') }}
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+		</tr>
+		{% endfor %}{% endfor %}
+	</table>
+</div>
 {% endblock %}
