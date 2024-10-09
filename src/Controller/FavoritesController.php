@@ -18,11 +18,6 @@ class FavoritesController extends AbstractController
     public function index(FavoritesRepository $allFavs, EntityManagerInterface $entityManager): Response
     {
         $favs = $allFavs->findAll();
-        $lines = [];
-        foreach ($favs as $fav) {
-            array_push($lines, $fav->getLine());
-        }
-
         return $this->render('favorites/index.html.twig', [
             "favs" => $favs
         ]);

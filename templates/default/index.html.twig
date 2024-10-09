@@ -7,7 +7,7 @@ block body %}
 <div class="container">
 	<h1>Lines</h1>
 	<div class="mb-3">
-		<form action="" method="post" class="row">
+		<form action="" method="get" class="row" id = "search_form">
 			<div class="col-9 row">
 				<div class="col">
 					<label for="Departure" class="form-label">
@@ -25,12 +25,12 @@ block body %}
 
 
 			<div class="col-3 d-flex justify-content-end flex-column align-items-start">
-				<button type="submit" class="btn btn-primary">Search</button>
+				<button type="submit" class="btn btn-primary" >Search</button>
 			</div>
 		</form>
 
 	</div>
-	<table class="table table-secondary table-hover rounded-3 overflow-hidden ">
+	<table id = 'line_table'class="table table-secondary table-hover rounded-3 overflow-hidden ">
 		{# <tr>
 			<th>Train</th>
 			<th>Departure</th>
@@ -107,4 +107,46 @@ block body %}
 		</tr>
 		{% endfor %}{% endfor %}
 	</table>
+
+	
+	<script>
+
+		const is_connected = {{ app.user is defined }} 
+		async function fetchData() {
+		
+			let divAjaxGet = document.querySelector("#line_table");
+			try {
+			
+				let response = await fetch('/ajax/get', {
+					method: 'GET',
+				});
+				
+				let reponseAjax = await response.json();
+				console.log(reponseAjax);
+				divAjaxGet.innerHTML = reponseAjax;
+				
+				
+				
+				
+				
+				
+
+				
+
+				
+			} catch (error) {
+			
+				console.error("Erreur lors de la récupération des données:", error);
+			}
+		}
+
+	elem =document.querySelector("#search_form");
+	if(elem){
+		elem.addEventListener("submit",function(event){
+			event.preventDefault();
+			fetchData();
+
+	});
+	}
+	</script>
 </div>{% endblock %}

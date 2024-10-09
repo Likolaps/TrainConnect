@@ -21,17 +21,6 @@ class Station
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
-    /**
-     * @var Collection<int, Stop>
-     */
-    #[ORM\OneToMany(targetEntity: Stop::class, mappedBy: 'station')]
-    private Collection $stops;
-
-    public function __construct()
-    {
-        $this->stops = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -57,36 +46,6 @@ class Station
     public function setCity(string $city): static
     {
         $this->city = $city;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Stop>
-     */
-    public function getStops(): Collection
-    {
-        return $this->stops;
-    }
-
-    public function addStop(Stop $stop): static
-    {
-        if (!$this->stops->contains($stop)) {
-            $this->stops->add($stop);
-            $stop->setStation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStop(Stop $stop): static
-    {
-        if ($this->stops->removeElement($stop)) {
-            // set the owning side to null (unless already changed)
-            if ($stop->getStation() === $this) {
-                $stop->setStation(null);
-            }
-        }
 
         return $this;
     }

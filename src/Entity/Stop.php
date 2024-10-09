@@ -24,7 +24,7 @@ class Stop
     #[ORM\JoinColumn(nullable: false)]
     private ?Line $line = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stops')]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
     private ?Station $station = null;
 
