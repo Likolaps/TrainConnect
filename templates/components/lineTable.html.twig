@@ -1,16 +1,5 @@
-<div {{ attributes }}>
-    <strong>{{ this.getLines() }}</strong>
-    
-    
 
-    <button
-        data-action="live#$render"
-    >Generate a new number!</button>
-</div>
-
-
-
-{% for line in this.lines %}
+{% for line in this.getLines %}
 		<tr>
 
 			<td>{{ line.train.type }}</td>
