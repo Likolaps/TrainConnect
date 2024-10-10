@@ -1,41 +1,40 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-Train Connect
+	Train Connect
 {% endblock %}
 {%
 block body %}
-<div class="container">
-	<h1>Lines</h1>
-	<div class="mb-3">
-		<form action="" method="post" class="row">
-			<div class="col-9 row">
-				<div class="col">
-					<label for="Departure" class="form-label">
-						<b>Departure City</b>
-					</label>
-					<input class="form-control" type="text" name="Departure" id="Departure" />
+	<div class="container">
+		<h1>Lines</h1>
+		<div class="mb-3">
+			<form action="" method="post" class="row">
+				<div class="col-9 row">
+					<div class="col">
+						<label for="Departure" class="form-label">
+							<b>Departure City</b>
+						</label>
+						<input class="form-control" type="text" name="Departure" id="Departure"/>
+					</div>
+					<div class="col">
+						<label for="Arrival" class="form-label">
+							<b>Arrival City</b>
+						</label>
+						<input class="form-control" type="text" name="Arrival" id="Arrival"/>
+					</div>
 				</div>
-				<div class="col">
-					<label for="Arrival" class="form-label">
-						<b>Arrival City</b>
-					</label>
-					<input class="form-control" type="text" name="Arrival" id="Arrival" />
+
+
+				<div class="col-3 d-flex justify-content-end flex-column align-items-start">
+					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
-			</div>
+			</form>
+
+		</div>
 
 
-			<div class="col-3 d-flex justify-content-end flex-column align-items-start">
-				<button type="submit" class="btn btn-primary">Search</button>
-			</div>
-		</form>
+		{# {{ component('LineTable') }} #}
+		<table class="table table-secondary table-hover rounded-3 overflow-hidden ">
+			<twig:LineTable :lines="lines"/>
+		</table>
 
-	</div>
-	
-
-	{# {{ component('LineTable') }} #}
-	<table class="table table-secondary table-hover rounded-3 overflow-hidden ">
-		<twig:LineTable :lines= "{{ lines }}" />
-	</table>
-
-{% endblock %}
-
+	{% endblock %}

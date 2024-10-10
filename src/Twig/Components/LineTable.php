@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Twig\Components;
 
 use App\Entity\Line;
@@ -11,16 +12,11 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 class LineTable
 {
     use DefaultActionTrait;
-    public Line $lines;
+    public array $lines = [];
 
-    public function __construct(private readonly LineRepository $lineRepository){
-
-        
-    }
+    public function __construct(private readonly LineRepository $lineRepository) {}
     public function getLines(): int
     {
         return rand(1, 100);
     }
-
-    
 }
