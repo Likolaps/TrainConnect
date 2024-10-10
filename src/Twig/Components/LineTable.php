@@ -33,12 +33,12 @@ class LineTable
 
         $query=$this->lineRepository->createQueryBuilder('line');
         if($departureName){
-            $query->innerJoin('line.stops','dstops',Join::WITH,"dstops.date_time_departure IS NOT NULL")->innerJoin('dstops.station','dstation',Join::WITH,'dstation.name = :Departure')
-            ->setParameter("Departure", $departureName);  
+            $query->innerJoin('line.stops','dstops',Join::WITH,"dstops.date_time_departure IS NOT NULL")->innerJoin('dstops.station','dstation',Join::WITH,'dstation.name LIKE :Departure')
+            ->setParameter("Departure", $departureName.'%');  
         }
         if($arrivalName){
-            $query->innerJoin('line.stops','astops',Join::WITH,"astops.date_time_arrival IS NOT NULL")->innerJoin('astops.station','astation',Join::WITH,'astation.name = :Arrival')
-            ->setParameter("Arrival", $arrivalName);  
+            $query->innerJoin('line.stops','astops',Join::WITH,"astops.date_time_arrival IS NOT NULL")->innerJoin('astops.station','astation',Join::WITH,'astation.name LIKE :Arrival')
+            ->setParameter("Arrival", $arrivalName.'%');  
         }
 
         $LinesArray=$query->getQuery()
