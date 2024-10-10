@@ -29,7 +29,11 @@
 			<td></td>
 			<td></td>
 			{% endif %}
-			<td>{{ line.delay }}</td>
+            {% if line.delay > 0 %}
+			<td> <div class=" btn btn-danger">{{ line.delay }} min.</div></td>
+            {% else %}
+            <td></td>
+            {% endif %}
 			<td>
 				{% if app.user %}
 				<a href="{{ path('app_add_to_favorites', { id: line.id }) }}" class="btn btn-warning add-to-fav">Add to

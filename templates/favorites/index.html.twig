@@ -17,7 +17,7 @@
 	}
 </style>
 
-<div class="example-wrapper">
+<div class="container">
 	<h1>Lines</h1>
 
 	<table class="table table-secondary table-hover rounded-3 overflow-hidden ">
@@ -64,8 +64,7 @@
 			<td>{{ fav.line.delay }}</td>
 			<td>
 				{% if app.user %}
-				<a href="{{ path('app_add_to_favorites', { id: fav.line.id }) }}" class="btn btn-warning add-to-fav">Add
-					to fav</a>
+				<a href="{{ path('app_fav_delete', { id: fav.line.id }) }}" class="btn btn-warning add-to-fav">Remove favorite</a>
 				{% endif %}
 			</td>
 			<td data-bs-toggle="collapse" data-bs-target="{{ '#accordion' ~ fav.line.id }}" class="clickable">

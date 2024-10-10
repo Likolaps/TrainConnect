@@ -43,14 +43,14 @@ class FavoritesController extends AbstractController
         }
 
 
-        return $this->redirectToRoute('app_favorites');
+        return $this->redirectToRoute('app_index');
     }
 
-    #[Route('/{id}', name: 'app_fav_delete')]
+    #[Route('favorites/delete/{id}', name: 'app_fav_delete')]
     public function delete($id, EntityManagerInterface $entityManager, FavoritesRepository $favoritesRepository): Response
     {
         $user = $this->getUser();
-        $fav = $favoritesRepository->find($id);
+        $fav = $favoritesRepository->findOneBy(["line"=>$id]);
         $entityManager->remove($fav);
         $entityManager->flush();
 
