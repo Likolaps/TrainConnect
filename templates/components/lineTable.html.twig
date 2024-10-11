@@ -1,4 +1,12 @@
-
+{# <tr>
+			<th>Train</th>
+			<th>Departure</th>
+			<th>Departure time</th>
+			<th>Arrival time</th>
+			<th>Arrival</th>
+			<th>Delay</th>
+			<th>Favorite</th>
+		</tr> #}
 {% for line in this.getLines %}
 		<tr>
 
@@ -30,7 +38,7 @@
 			<td></td>
 			{% endif %}
             {% if line.delay > 0 %}
-			<td> <div class=" btn btn-danger">{{ line.delay }} min.</div></td>
+			<td> <div class=" btn btn-danger">{{ line.delay }} min. delay</div></td>
             {% else %}
             <td></td>
             {% endif %}
